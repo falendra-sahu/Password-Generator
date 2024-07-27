@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Password Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+        }
+        .container {
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            margin-bottom: 60px; /* Space for the footer */
+        }
+        .container h1 {
+            margin-bottom: 1rem;
+            font-size: 2rem;
+            color: #333;
+        }
+        .password-display {
+            background: #f1f1f1;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.2rem;
+            color: #444;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.3rem;
+            font-weight: bold;
+            color: #555;
+        }
+        .form-group input[type="number"],
+        .form-group input[type="text"] {
+            width: 100%;
+            padding: 0.5rem;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            margin-bottom: 0.3rem;
+            font-size: 1rem;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        .form-group input[type="checkbox"] {
+            margin-right: 0.5rem;
+        }
+        .form-group div {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.3rem;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+        .buttons button {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s;
+            flex: 1;
+            margin: 0 0.25rem;
+        }
+        .buttons button:hover {
+            background: #ff4757;
+        }
+        .feedback {
+            margin-top: 0.5rem;
+            color: green;
+        }
+        footer {
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: #f5f5f5;
+            padding: 10px 0;
+            border-top: 1px solid #ddd;
+        }
+        footer a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Password Generator</h1>
+        <div class="password-display" id="passwordDisplay">Your Password</div>
+        <div class="form-group">
+            <label for="passwordLength">Password Length:</label>
+            <input type="number" id="passwordLength" min="4" max="20" value="12">
+        </div>
+        <div class="form-group">
+            <label for="prefix">Prefix:</label>
+            <input type="text" id="prefix" placeholder="Optional">
+        </div>
+        <div class="form-group">
+            <label for="suffix">Suffix:</label>
+            <input type="text" id="suffix" placeholder="Optional">
+        </div>
+        <div class="form-group">
+            <label>Include:</label>
+            <div>
+                <input type="checkbox" id="includeLowercase"> Lowercase Letters
+            </div>
+            <div>
+                <input type="checkbox" id="includeUppercase"> Uppercase Letters
+            </div>
+            <div>
+                <input type="checkbox" id="includeNumbers"> Numbers
+            </div>
+            <div>
+                <input type="checkbox" id="includeSymbols"> Special Characters
+            </div>
+        </div>
+        <div class="buttons">
+            <button onclick="generatePassword()">Generate</button>
+            <button onclick="copyPassword()">Copy</button>
+            <button onclick="clearFields()">Clear</button>
+        </div>
+        <div class="feedback" id="feedback"></div>
+    </div>
+    <footer>
+        Powered by <a href="#">Falendra Sahu ❤️</a>
+    </footer>
+
+    <script>
+        function generatePassword() {
+            const length = document.getElementById('passwordLength').value;
+            const prefix = document.getElementById('prefix').value;
+            const suffix = document.getElementById('suffix').value;
+            const includeLowercase = document.getElementById('includeLowercase').checked;
+            const includeUppercase = document.getElementById('includeUppercase').checked;
+            const includeNumbers = document.getElementById('includeNumbers').checked;
+            const includeSymbols = document.getElementById('includeSymbols').checked;
+
+            if (!includeLowercase && !includeUppercase && !includeNumbers && !includeSymbols) {
+                alert('Please select at least one character type.');
+                return;
+            }
+
+            const lowercase = 'abcdefghijklmnopqrstuvwxyz';
+            const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const numbers = '0123456789';
+            const symbols = '!@#$%^&*()_+-=[]{}|;:,.<>?';
+            let allChars = '';
+            if (includeLowercase) allChars += lowercase;
+            if (includeUppercase) allChars += uppercase;
+            if (includeNumbers) allChars += numbers;
+            if (includeSymbols) allChars += symbols;
+
+            let password = '';
+            for (let i = 0; i < length; i++) {
+                password += allChars.charAt(Math.floor(Math.random() * allChars.length));
+            }
+
+            document.getElementById('passwordDisplay').innerText = prefix + password + suffix;
+        }
+
+        function copyPassword() {
+            const password = document.getElementById('passwordDisplay').innerText;
+            navigator.clipboard.writeText(password).then(() => {
+                document.getElementById('feedback').innerText = 'Password copied to clipboard!';
+                setTimeout(() => {
+                    document.getElementById('feedback').innerText = '';
+                }, 2000);
+            });
+        }
+
+        function clearFields() {
+            document.getElementById('passwordLength').value = '12';
+            document.getElementById('prefix').value = '';
+            document.getElementById('suffix').value = '';
+            document.getElementById('includeLowercase').checked = false;
+            document.getElementById('includeUppercase').checked = false;
+            document.getElementById('includeNumbers').checked = false;
+            document.getElementById('includeSymbols').checked = false;
+            document.getElementById('passwordDisplay').innerText = 'Your Password';
+            document.getElementById('feedback').innerText = '';
+        }
+    </script>
+</body>
+</html>
