@@ -1,283 +1,324 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<html><head><base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
     <title>Password Generator</title>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.11.2/toastify.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.11.2/toastify.min.js"></script>
     <style>
-        *, *:before, *:after {
-            padding: 0;
-            margin: 0;
-            box-sizing: border-box;
-        }
         body {
-            background-color: #080710;
-            overflow: hidden; /* Prevent scrolling */
-            touch-action: pan-y; /* Prevent zooming */
-        }
-        .background {
-            width: 430px;
-            height: 520px;
-            position: absolute;
-            transform: translate(-50%, -50%);
-            left: 50%;
-            top: 50%;
-        }
-        .shape {
-            height: 200px;
-            width: 200px;
-            position: absolute;
-            border-radius: 50%;
-        }
-        .shape:first-child {
-            background: linear-gradient(#1845ad, #23a2f6);
-            left: -80px;
-            top: 60px;
-        }
-        .shape:last-child {
-            background: linear-gradient(to right, #ff512f, #f09819);
-            right: -80px;
-            bottom: 60px;
-        }
-        form {
-            height: 600px;
-            width: 400px;
-            background-color: rgba(255, 255, 255, 0.13);
-            position: absolute;
-            transform: translate(-50%, -50%);
-            top: 50%;
-            left: 50%;
-            border-radius: 10px;
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
-            padding: 20px;
-        }
-        form * {
+            background: #1a1a1a;
+            min-height: 100vh;
+            display: flex;
+            align-items: flex-start;
+            padding-top: 2rem; 
+            justify-content: center;
             font-family: 'Poppins', sans-serif;
-            color: #ffffff;
-            letter-spacing: 0.5px;
-            outline: none;
-            border: none;
+            color: #fff;
+            overflow: hidden; 
+            touch-action: none; 
+            height: 100vh;
+            max-height: 100vh;
         }
+
+        form {
+            width: 400px;
+            background: linear-gradient(145deg, #1f1f1f, #2a2a2a);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            max-height: 100vh;
+            overflow-y: auto;
+            padding-bottom: 4rem; 
+        }
+
         form h3 {
-            font-size: 32px;
-            font-weight: 500;
-            text-align: center;
-            margin-bottom: 20px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            background: linear-gradient(45deg, #00ffaa, #00a2ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
+
         label {
-            display: block;
-            margin-top: 15px;
-            font-size: 16px;
-            font-weight: 500;
+            font-size: 0.8rem;
+            opacity: 0.9;
+            margin-top: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
+
         input[type="text"], input[type="number"] {
-            display: block;
-            height: 50px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.7rem 0.9rem;
+            border-radius: 8px;
             width: 100%;
-            background-color: rgba(255, 255, 255, 0.07);
-            border-radius: 3px;
-            padding: 0 10px;
-            font-size: 14px;
-            font-weight: 300;
-            margin-top: 5px;
+            color: #fff;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
         }
+
+        input[type="text"]:focus, input[type="number"]:focus {
+            border-color: #00ffaa;
+            box-shadow: 0 0 0 2px rgba(0, 255, 170, 0.2);
+        }
+
         .button-container {
             display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
+            gap: 0.8rem;
+            margin-top: 1.2rem;
         }
+
         button {
-            width: 30%;
-            background-color: #ffffff;
-            color: #080710;
-            padding: 10px 0;
-            font-size: 14px;
-            font-weight: 600;
-            border-radius: 5px;
+            flex: 1;
+            padding: 0.7rem;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+            border: none;
             cursor: pointer;
         }
-        .message {
-            color: white;
-            font-weight: bold;
-            text-align: center;
-            display: none;
-            margin-top: 15px;
+
+        #generateButton {
+            background: linear-gradient(45deg, #00ffaa, #00a2ff);
+            color: #000;
         }
-        footer {
+
+        #copyButton {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+
+		}
+
+        #copyButton:hover {
+			background: rgb(72,76,106);
+			color: #fff;
+
+
+        }
+
+        #clearButton {
+            background: rgba(255, 0, 0, 0.1);
+            color: #ff4444;
+            border: 1px solid rgba(255, 68, 68, 0.2);
+
+	}
+
+        #clearbutton:hover {
+			background: rgb(235,21,21);
+			color: #fff;
+
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+        }
+
+        .prefix-suffix-container {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 0.8rem;
+        }
+
+        input[type="checkbox"] {
+            appearance: none;
+            width: 1rem;
+            height: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.03);
+            cursor: pointer;
+            position: relative;
+        }
+
+        input[type="checkbox"]:checked {
+            background: linear-gradient(45deg, #00ffaa, #00a2ff);
+            border-color: transparent;
+        }
+
+        input[type="checkbox"]:checked::after {
+            content: '✓';
             position: absolute;
-            bottom: 10px;
-            width: 100%;
+            color: #000;
+            font-size: 0.7rem;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0.8rem;
             text-align: center;
-            font-size: 14px;
-            color: white;
-            font-weight: bold;
-            font-family: Calibri, sans-serif;
-        }
-        .powered-by {
-            font-family: Calibri, sans-serif;
-        }
-        .falendra {
-            color: white;
-            font-weight: bold;
-            font-family: 'Poppins', sans-serif;
+            width: 100%;
+            font-size: 0.7rem;
+            opacity: 0.7;
         }
 
         @media (max-width: 500px) {
-            .background {
-                width: 90vw;
-                height: 90vh;
-            }
             form {
-                width: 90vw;
-                height: auto;
-                padding: 10px;
+                width: 90%;
+                padding: 1.2rem;
             }
-            form h3 {
-                font-size: 24px;
+            
+            .button-container {
+                flex-direction: row;
+                gap: 0.5rem;
             }
+            
             button {
-                width: 32%;
-                font-size: 12px;
+                padding: 0.7rem 0.4rem;
+                font-size: 0.75rem;
             }
         }
-        .prefix-suffix-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 15px;
+
+        .toastify {
+            border-radius: 12px !important;
+            padding: 12px 20px !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            font-family: 'Poppins', sans-serif !important;
+            font-size: 0.9rem !important;
         }
-        .prefix-suffix-container input {
-            width: 48%; /* Adjusts width for both fields */
+
+        .toastify::before {
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            margin-right: 8px;
+        }
+
+        .toast-success::before {
+            content: '\f00c';  
+        }
+
+        .toast-error::before {
+            content: '\f071';  
         }
     </style>
 </head>
 <body>
-<div class="background">
-    <div class="shape"></div>
-    <div class="shape"></div>
-</div>
-<form id="passwordForm">
-    <h3>Password Generator</h3>
-    
-    <label for="passwordLength">Password Length</label>
-    <input type="number" id="passwordLength" value="12" min="1" max="50">
+    <form id="passwordForm">
+        <h3>Password Generator</h3>
 
-    <label><input type="checkbox" id="includeUppercase" checked> Include Uppercase Letters</label>
-    <label><input type="checkbox" id="includeLowercase" checked> Include Lowercase Letters</label>
-    <label><input type="checkbox" id="includeNumbers" checked> Include Numbers</label>
-    <label><input type="checkbox" id="includeSpecials" checked> Include Special Characters</label>
-
-    <label><input type="checkbox" id="includePrefixSuffix"> Include Prefix and Suffix</label>
-    
-    <div class="prefix-suffix-container" id="prefixSuffixContainer" style="display: none;">
-        <input type="text" id="prefixInput" placeholder="Prefix">
-        <input type="text" id="suffixInput" placeholder="Suffix">
-    </div>
-
-    <label for="passwordOutput">Generated Password</label>
-    <input type="text" id="passwordOutput" readonly>
-
-    <div class="button-container">
-        <button type="button" id="generateButton">Generate</button>
-        <button type="button" id="copyButton">Copy</button>
-        <button type="button" id="clearButton">Clear</button>
-    </div>
-    
-    <div class="message" id="message"></div>
-</form>
-
-<footer>
-    <div class="powered-by">Powered by <span class="falendra">Falendra Sahu ❤︎</span></div>
-</footer>
-
-<script>
-    const generateButton = document.getElementById('generateButton');
-    const copyButton = document.getElementById('copyButton');
-    const clearButton = document.getElementById('clearButton');
-    const passwordOutput = document.getElementById('passwordOutput');
-    const messageElement = document.getElementById('message');
-    const includePrefixSuffix = document.getElementById('includePrefixSuffix');
-    const prefixSuffixContainer = document.getElementById('prefixSuffixContainer');
-    const prefixInput = document.getElementById('prefixInput');
-    const suffixInput = document.getElementById('suffixInput');
-
-    includePrefixSuffix.addEventListener('change', function() {
-        prefixSuffixContainer.style.display = includePrefixSuffix.checked ? 'flex' : 'none';
-    });
-
-    generateButton.addEventListener('click', function() {
-        const length = +document.getElementById('passwordLength').value;
-        const includeUppercase = document.getElementById('includeUppercase').checked;
-        const includeLowercase = document.getElementById('includeLowercase').checked;
-        const includeNumbers = document.getElementById('includeNumbers').checked;
-        const includeSpecials = document.getElementById('includeSpecials').checked;
-
-        const password = generatePassword(length, includeUppercase, includeLowercase, includeNumbers, includeSpecials);
-        let finalPassword = password;
-        if (includePrefixSuffix.checked) {
-            finalPassword = prefixInput.value + finalPassword + suffixInput.value;
-        }
-
-        passwordOutput.value = finalPassword;
-    });
-
-    copyButton.addEventListener('click', function() {
-        if (passwordOutput.value === '') {
-            messageElement.textContent = 'Please generate a password first!';
-            messageElement.style.display = 'block';
-            setTimeout(() => {
-                messageElement.style.display = 'none';
-            }, 1000);
-        } else {
-            navigator.clipboard.writeText(passwordOutput.value).then(() => {
-                messageElement.textContent = 'Password copied to clipboard!';
-                messageElement.style.display = 'block';
-                setTimeout(() => {
-                    messageElement.style.display = 'none';
-                }, 1000);
-            });
-        }
-    });
-
-    clearButton.addEventListener('click', function() {
-        passwordOutput.value = '';
-        messageElement.textContent = '';
-        messageElement.style.display = 'none';
-        document.getElementById('passwordLength').value = 12; // Reset password length to default
-        document.getElementById('includeUppercase').checked = true; // Reset checkboxes
-        document.getElementById('includeLowercase').checked = true;
-        document.getElementById('includeNumbers').checked = true;
-        document.getElementById('includeSpecials').checked = true;
-        prefixInput.value = ''; // Reset prefix
-        suffixInput.value = ''; // Reset suffix
-        prefixSuffixContainer.style.display = 'none'; // Hide prefix/suffix input
-        includePrefixSuffix.checked = false; // Uncheck the include prefix/suffix checkbox
-    });
-
-    function generatePassword(length, includeUppercase, includeLowercase, includeNumbers, includeSpecials) {
-        const upperChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        const lowerChars = 'abcdefghijklmnopqrstuvwxyz';
-        const numberChars = '0123456789';
-        const specialChars = '!@#$%^&*()_+';
+        <label for="passwordOutput">Generated Password:</label>
+        <input type="text" id="passwordOutput" readonly>
         
-        let characters = '';
-        if (includeUppercase) characters += upperChars;
-        if (includeLowercase) characters += lowerChars;
-        if (includeNumbers) characters += numberChars;
-        if (includeSpecials) characters += specialChars;
+        <label for="passwordLength">Password Length:</label>
+        <input type="number" id="passwordLength" value="12" min="1" max="50">
 
-        if (characters.length === 0) return '';
+        <label><input type="checkbox" id="includeUppercase" checked> Include Uppercase Letters</label>
+        <label><input type="checkbox" id="includeLowercase" checked> Include Lowercase Letters</label>
+        <label><input type="checkbox" id="includeNumbers" checked> Include Numbers</label>
+        <label><input type="checkbox" id="includeSpecials" checked> Include Special Characters</label>
 
-        let result = '';
-        for (let i = 0; i < length; i++) {
-            result += characters.charAt(Math.floor(Math.random() * characters.length));
-        }
-        return result;
+        <label><input type="checkbox" id="includePrefixSuffix"> Include Prefix and Suffix</label>
+        
+        <div class="prefix-suffix-container" id="prefixSuffixContainer" style="display: none;">
+            <input type="text" id="prefixInput" placeholder="Prefix">
+            <input type="text" id="suffixInput" placeholder="Suffix">
+        </div>
+
+        <div class="button-container">
+            <button type="button" id="generateButton">Generate</button>
+            <button type="button" id="copyButton">Copy</button>
+            <button type="button" id="clearButton">Clear</button>
+        </div>
+    </form>
+
+    <footer>
+        <div class="powered-by">Powered by <span class="falendra">Falendra Sahu &#x2764;&#xfe0e;</span></div>
+    </footer>
+
+    <script>const generateButton = document.getElementById('generateButton');
+const copyButton = document.getElementById('copyButton');
+const clearButton = document.getElementById('clearButton');
+const passwordOutput = document.getElementById('passwordOutput');
+const includePrefixSuffix = document.getElementById('includePrefixSuffix');
+const prefixSuffixContainer = document.getElementById('prefixSuffixContainer');
+const prefixInput = document.getElementById('prefixInput');
+const suffixInput = document.getElementById('suffixInput');
+function showToast(text, type = 'success') {
+  Toastify({
+    text: text,
+    duration: 1000,
+    gravity: "top",
+    position: "right",
+    className: type === 'success' ? 'toast-success' : 'toast-error',
+    style: {
+      background: type === 'success' ? "linear-gradient(to right, #00ffaa, #00a2ff)" : "linear-gradient(to right, #ff4444, #ff6b6b)",
+      boxShadow: "0 3px 10px rgba(0,0,0,0.1)",
+      border: "1px solid rgba(255,255,255,0.1)"
     }
-</script>
+  }).showToast();
+}
+includePrefixSuffix.addEventListener('change', function () {
+  prefixSuffixContainer.style.display = includePrefixSuffix.checked ? 'flex' : 'none';
+});
+generateButton.addEventListener('click', function () {
+  const length = +document.getElementById('passwordLength').value;
+  const includeUppercase = document.getElementById('includeUppercase').checked;
+  const includeLowercase = document.getElementById('includeLowercase').checked;
+  const includeNumbers = document.getElementById('includeNumbers').checked;
+  const includeSpecials = document.getElementById('includeSpecials').checked;
+  const password = generatePassword(length, includeUppercase, includeLowercase, includeNumbers, includeSpecials);
+  let finalPassword = password;
+  if (includePrefixSuffix.checked) {
+    finalPassword = prefixInput.value + finalPassword + suffixInput.value;
+  }
+  passwordOutput.value = finalPassword;
+});
+copyButton.addEventListener('click', async function () {
+  if (passwordOutput.value === '') {
+    showToast('Please generate a password first!', 'error');
+  } else {
+    try {
+      await navigator.clipboard.writeText(passwordOutput.value);
+      showToast('Password copied!');
+    } catch (err) {
+      showToast('Failed to copy password', 'error');
+    }
+  }
+});
+clearButton.addEventListener('click', function () {
+  passwordOutput.value = '';
+  document.getElementById('passwordLength').value = 12;
+  document.getElementById('includeUppercase').checked = true;
+  document.getElementById('includeLowercase').checked = true;
+  document.getElementById('includeNumbers').checked = true;
+  document.getElementById('includeSpecials').checked = true;
+  prefixInput.value = '';
+  suffixInput.value = '';
+  prefixSuffixContainer.style.display = 'none';
+  includePrefixSuffix.checked = false;
+  showToast('Form cleared!');
+});
+function generatePassword(length, includeUppercase, includeLowercase, includeNumbers, includeSpecials) {
+  const upperChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const lowerChars = 'abcdefghijklmnopqrstuvwxyz';
+  const numberChars = '0123456789';
+  const specialChars = '!@#$%^&*()_+';
+  let characters = '';
+  if (includeUppercase) characters += upperChars;
+  if (includeLowercase) characters += lowerChars;
+  if (includeNumbers) characters += numberChars;
+  if (includeSpecials) characters += specialChars;
+  if (characters.length === 0) return '';
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return result;
+}</script>
 </body>
 </html>
